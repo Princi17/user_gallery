@@ -1,0 +1,46 @@
+= form_for :compose, url: send_email_users_path do |f|
+  .row
+    %fieldset.form-group.col-md-12
+      %i.fa.fa-star.icon-c
+      = f.label "To", class: "text-capitalize"
+      = f.select :to, options_for_select(@users.map {|c| ["#{c.name} <#{c.email}>", c.id]}, @users.pluck(:id)),{}, {class: "form-control custom-select multiple_select_dropdown", multiple: true, required: true}
+    %fieldset.form-group.col-md-12
+      %i.fa.fa-star.icon-c
+      = f.label "Subject", class: "text-capitalize"
+      = f.text_field :subject, class: "form-control", required: true
+    %fieldset.form-group.col-md-12
+      = f.label "Body", class: "text-capitalize"
+      = f.text_area :html_part, class: "form-control", required: true
+  .row.m-t-1
+    .modal-footer
+      %button.btn.btn-secondary{"data-dismiss" => "modal", :type => "button"} Close
+      = f.submit 'Save', class: "btn btn-primary"
+
+:javascript
+  $(".multiple_select_dropdown").select2({
+    ajax: {
+      dataType: 'json',
+      delay: 250,
+      data: function (params) {
+        return {
+          q: params.term, // search term
+          page: params.page
+        };
+      },
+      processResults: function (data, params) {
+        params.page = params.page || 1;
+
+        return {
+          results:  $.map(data.records, function(obj){
+                      var text_part = obj.name" <"+obj.email+">";
+                      return{id: obj.id, text: text_part, obj_id: obj.id}
+                    }),
+          pagination: {
+            more: (params.page * 30) < data.total_count
+          }
+        };
+      },
+      cache: true
+    },// let our custom formatter work
+    minimumInputLength: 1
+  });

@@ -1,0 +1,38 @@
+.container
+  .row
+    .col-md-8
+      %h1 Users
+    .col-md-4
+      = link_to("#", { class: "btn btn-new", id: "compose-email", remote: true}) do
+        Compose Email
+        %i.fa.fa-plus
+
+      = link_to(new_user_path, class: "btn btn-new" ) do
+        Add Contact
+        %i.fa.fa-plus
+
+  .row
+    = render 'users'
+
+  = render 'dialog'
+
+:javascript
+  $("#compose-email").on("click", function(){
+    event.preventDefault();
+    var user_array = []
+    $(".user_select").each(function(index, user){
+      if($(user).prop("checked")){
+        user_array[index] = $(user).val();
+      }
+    });
+    $("#dialog").modal("show");
+    $.ajax({
+      type: 'POST',
+      url: "/users/compose_email",
+      data: {user_ids: user_array},
+      success: function(data){
+        console.log("compose email !!")
+      }
+    });
+
+  })

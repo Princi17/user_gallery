@@ -1,0 +1,43 @@
+%br
+%table.table
+  %tr
+    %th
+    %th= check_box_tag :select_all, "", false, class: "user_select_all"
+    %th NAME
+    %th EMAIL
+    %th DESCRIPTION
+    %th
+  - if @users.present?
+    - @users.each do |user|
+      %tr
+        %td
+        %td= check_box_tag "user[#{user.id}]", user.id,  false, class: "user_select"
+        %td= user.name
+        %td= user.email
+        %td= user.try(:desription)
+        %td.center_text
+          - @user = user
+          = link_to "", edit_user_path(user), class: "fa fa-lg fa-pencil-square grey-icon"
+          = link_to "", user_path(user), method: :delete, class: "fa fa-lg fa-minus-square grey-icon", data: {confirm: "You are about to delete this user!!"}
+  - else
+    %tr
+      %td.textalign-c{colspan: "8"} No Contacts Present
+
+
+#user
+#template
+
+
+:javascript
+  $("#select_all").on("change", function(){
+    if($(this).prop("checked")){
+      $(".user_select").each(function(index, user){
+        $(user).prop("checked", true);
+      });
+    }
+    else{
+      $(".user_select").each(function(index, user){
+        $(user).prop("checked", false);
+      });
+    }
+  })

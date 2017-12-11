@@ -1,0 +1,24 @@
+= form_for @user do |f|
+  .row
+    .col-sm-6
+      .form-group
+        = f.label :name, :class => "control-label"
+        = f.text_field :name, required: true, :class => "form-control"
+
+      .form-group
+        = f.label :email, :class => "control-label"
+        = f.text_field :email, required: true, :class => "form-control"
+
+      .form-group
+        = f.label "Description", :class => "control-label"
+        = f.text_area :desription, :class => "form-control"
+
+  .row.pull-left
+    = f.submit "Save", class: "btn btn-new"
+    = link_to "Cancel", :back , class: "btn btn-new"
+
+:css
+  .btn{
+    font-family: 'Telex', sans-serif !important;
+    font-size: 20px;
+  }

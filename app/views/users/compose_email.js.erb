@@ -1,0 +1,5 @@
+$('#dialog h3').html("<i class='glyphicon glyphicon-plus'></i> Add New Customer");
+$('.modal-body').html('<%= j render("compose_email_form") %>');
+$('#dialog').on('shown.bs.modal', function () {
+	  $('.first_input').focus()
+  })
